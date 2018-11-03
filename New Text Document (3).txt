@@ -1,0 +1,327 @@
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Thu Aug 16 05:30:01 2018
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> connect
+Enter user-name: tanaz
+Enter password:
+Connected.
+SQL> create table publisher
+  2  (
+  3  name varchar(15) not null,
+  4  address varchar(15) not null,
+  5  phone number(10),
+  6  primary key(name)
+  7  );
+
+Table created.
+
+SQL> create table library_branch
+  2  (
+  3  branch_id varchar(3),
+  4  branch_name varchar(15),
+  5  address varchar(15),
+  6  primary key(branch_id)
+  7  );
+
+Table created.
+
+SQL> create table book
+  2  (
+  3  book_id varchar(3) not null,
+  4  title varchar(15),
+  5  publisher_name varchar(15),
+  6  pub_year number(4),
+  7  primary key(book_id),
+  8  foreign key(publisher_name)references publisher(name)
+  9  );
+
+Table created.
+
+SQL> create table book_copies
+  2  (
+  3  book_id varchar(3),
+  4  branch_id varchar(3),
+  5  no_of_copies number(3),
+  6  primary key(book_id,branch_id),
+  7  foreign key(book_id)references book(book_id),
+  8  foreign key(branch_id) references library_branch(branch_id)
+  9  );
+
+Table created.
+
+SQL> create table book_authors
+  2  (
+  3  book_id varchar(3),
+  4  author_name varchar(5),
+  5  primary key(book_id),
+  6  foreign key(book_id) references book(book_id)
+  7  );
+
+Table created.
+
+SQL> create table book_lending
+  2  9
+  3  (
+  4  book_id varchar(3),
+  5  branch_id varchar(3),
+  6  card_no varchar(3),
+  7  date_out date ,
+  8  due_date date,
+  9  primary key(book_id,branch_id,card_no),
+ 10  foreign key(book_id)references book(book_id),
+ 11  foreign key(branch_id) references library_branch(branch_id)
+ 12  );
+9
+*
+ERROR at line 2:
+ORA-00922: missing or invalid option
+
+
+SQL> create table book_lending
+  2  (
+  3  book_id varchar(3),
+  4  branch_id varchar(3),
+  5  card_no varchar(3),
+  6  date_out date ,
+  7  due_date date,
+  8  primary key(book_id,branch_id,card_no),
+  9  foreign key(book_id)references book(book_id),
+ 10  foreign key(branch_id) references library_branch(branch_id)
+ 11  );
+SQL> desc publisher
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                      NOT NULL VARCHAR2(15)
+ ADDRESS                                   NOT NULL VARCHAR2(15)
+ PHONE                                              NUMBER(10)
+
+SQL> desc library_branch
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BRANCH_ID                                 NOT NULL VARCHAR2(3)
+ BRANCH_NAME                                        VARCHAR2(15)
+ ADDRESS                                            VARCHAR2(15)
+
+SQL> desc book
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_ID                                   NOT NULL VARCHAR2(3)
+ TITLE                                              VARCHAR2(15)
+ PUBLISHER_NAME                                     VARCHAR2(15)
+ PUB_YEAR                                           NUMBER(4)
+
+SQL> desc book_copies
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_ID                                   NOT NULL VARCHAR2(3)
+ BRANCH_ID                                 NOT NULL VARCHAR2(3)
+ NO_OF_COPIES                                       NUMBER(3)
+
+SQL> desc book_authors
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_ID                                   NOT NULL VARCHAR2(3)
+ AUTHOR_NAME                                        VARCHAR2(5)
+
+SQL> desc book_lending
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_ID                                   NOT NULL VARCHAR2(3)
+ BRANCH_ID                                 NOT NULL VARCHAR2(3)
+ CARD_NO                                   NOT NULL VARCHAR2(3)
+ DATE_OUT                                           DATE
+ DUE_DATE                                           DATE
+
+
+Table created.
+
+SQL>
+SQL> create table publisher
+    (
+    name varchar(15) not null,
+    address varchar(15) not null,
+    phone number(10),
+    primary key(name)
+   );
+
+Table created.
+
+SQL> create table library_branch
+   (
+   branch_id varchar(3),
+   branch_name varchar(15),
+    address varchar(15),
+    primary key(branch_id)
+   );
+
+Table created.
+
+SQL> create table book
+    (
+    book_id varchar(3) not null,
+    title varchar(15),
+    publisher_name varchar(15),
+    pub_year number(4),
+   primary key(book_id),
+    foreign key(publisher_name)references publisher(name) on delete cascade
+    );
+
+Table created.
+
+SQL> create table book_copies
+    (
+    book_id varchar(3),
+   branch_id varchar(3),
+    no_of_copies number(3),
+    primary key(book_id,branch_id),
+    foreign key(book_id)references book(book_id) on delete cascade,
+    foreign key(branch_id) references library_branch(branch_id) on delete cascade
+    );
+
+Table created.
+
+SQL> create table book_authors
+  (
+    book_id varchar(3),
+    author_name varchar(5),
+    primary key(book_id),
+   foreign key(book_id) references book(book_id) on delete cascade
+    );
+
+Table created.
+SQL> create table publisher
+  2  (
+  3  name varchar(15) not null,
+  4  address varchar(15) not null,
+  5  phone number(10),
+  6  primary key(name)
+  7  );
+
+Table created.
+
+SQL> create table library_branch
+  2  (
+  3  branch_id varchar(3),
+  4  branch_name varchar(15),
+  5  address varchar(15),
+  6  primary key(branch_id)
+  7  );
+
+Table created.
+
+SQL> create table book
+  2  (
+  3  book_id varchar(3) not null,
+  4  title varchar(15),
+  5  publisher_name varchar(15),
+  6  pub_year number(4),
+  7  primary key(book_id),
+  8  foreign key(publisher_name)references publisher(name)
+  9  );
+
+Table created.
+
+SQL> create table book_copies
+  2  (
+  3  book_id varchar(3),
+  4  branch_id varchar(3),
+  5  no_of_copies number(3),
+  6  primary key(book_id,branch_id),
+  7  foreign key(book_id)references book(book_id),
+  8  foreign key(branch_id) references library_branch(branch_id)
+  9  );
+
+Table created.
+
+SQL> create table book_authors
+  2  (
+  3  book_id varchar(3),
+  4  author_name varchar(5),
+  5  primary key(book_id),
+  6  foreign key(book_id) references book(book_id)
+  7  );
+
+Table created.
+SQL> create table publisher
+  2  (
+  3  name varchar(15) not null,
+  4  address varchar(15) not null,
+  5  phone number(10),
+  6  primary key(name)
+  7  );
+
+Table created.
+
+SQL> create table library_branch
+  2  (
+  3  branch_id varchar(3),
+  4  branch_name varchar(15),
+  5  address varchar(15),
+  6  primary key(branch_id)
+  7  );
+
+Table created.
+
+SQL> create table book
+  2  (
+  3  book_id varchar(3) not null,
+  4  title varchar(15),
+  5  publisher_name varchar(15),
+  6  pub_year number(4),
+  7  primary key(book_id),
+  8  foreign key(publisher_name)references publisher(name)
+  9  );
+
+Table created.
+
+SQL> create table book_copies
+  2  (
+  3  book_id varchar(3),
+  4  branch_id varchar(3),
+  5  no_of_copies number(3),
+  6  primary key(book_id,branch_id),
+  7  foreign key(book_id)references book(book_id),
+  8  foreign key(branch_id) references library_branch(branch_id)
+  9  );
+
+Table created.
+
+SQL> create table book_authors
+  2  (
+  3  book_id varchar(3),
+  4  author_name varchar(5),
+  5  primary key(book_id),
+  6  foreign key(book_id) references book(book_id)
+  7  );
+
+Table created.
+
+SQL> create table book_lending
+   (
+    book_id varchar(3),
+    branch_id varchar(3),
+    card_no varchar(3),
+    date_out date ,
+    due_date date,
+    primary key(book_id,branch_id,card_no),
+    foreign key(book_id)references book(book_id) on delete cascade,
+   foreign key(branch_id) references library_branch(branch_id)on delete cascade
+  );
+
+Table created.
